@@ -1,0 +1,3 @@
+gateway:
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-name: dev-aws-eks-istio-ingress

@@ -1,0 +1,12 @@
+apiVersion: v2
+description: A Helm chart for cert-manager
+name: cert-manager
+version: v1.6.1
+dependencies:
+  - name: cert-manager
+    version: v1.6.1
+    repository: https://charts.jetstack.io
+  - name: external-secret
+    version: 1.1.0
+    repository: "file://../../../helm-charts/external-secret"
+    alias: letsencrypt-credentials-secret

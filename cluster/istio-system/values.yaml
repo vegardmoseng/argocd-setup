@@ -1,0 +1,9 @@
+istiod:
+  fullnameOverride: istiod
+gateway:
+  name: istio-ingressgateway
+  # service:
+  # These annotations should be under service but the helm chart is wrong
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    service.beta.kubernetes.io/aws-load-balancer-name: dev-aws-eks-istio-ingress

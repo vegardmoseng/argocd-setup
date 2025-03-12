@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: argocd
+  labels:
+    team: {{ .Values.argocd.team }}
+spec:
+  applicationSet: {}
+  applicationInstanceLabelKey: argocd.argoproj.io/instance
+  version: {{ .Values.argocd.version }}
+  disableAdmin: {{ .Values.argocd.disableAdmin }}
+  controller:
+    appSync:  {{ .Values.argocd.controller.appSync }}
+  ha:
+    enabled: true
+  server:
+    host: {{ .Values.argocd.server.host }}
+    ingress:
+      enabled: {{ .Values.argocd.server.ingress.enabled }}
+      {{- if .Values.argocd.server.ingress.enabled }}
+      {{- if .Values.argocd.server.ingress.annotations }}
+      annotations:
+        {{- with .Values.argocd.server.ingress.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      {{- if .Values.argocd.server.ingress.tls }}
+      tls:
+        {{- with .Values.argocd.server.ingress.tls }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      {{- end }}
+    insecure: true
+  repositoryCredentials: |
+  {{- range $repositoryCredential := .Values.argocd.repositoryCredentials }}
+    - sshPrivateKeySecret:
+        key: sshPrivateKey
+        name: {{ $.Values.gitRepoCredentials.name }}
+      type: git
+      url: {{ $repositoryCredential.url }}
+  {{- end }}
+  {{- if .Values.argocd.resourceCustomizations }}
+  resourceCustomizations: |
+    {{- with .Values.argocd.resourceCustomizations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.argocd.resourceExclusions }}
+  resourceExclusions: |
+    {{- with .Values.argocd.resourceExclusions }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.argocd.dex.enabled }}
+  dex:
+    config: |
+      {{- with .Values.argocd.dex.configuration }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.argocd.oidc.enabled }}
+  oidcConfig: |
+    {{- with .Values.argocd.oidc.config }}
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.argocd.rbac }}
+  rbac:
+    {{- with .Values.argocd.rbac }}
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }}

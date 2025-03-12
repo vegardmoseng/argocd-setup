@@ -1,0 +1,27 @@
+fullnameOverride: velero
+schedules:
+  daily:
+    enabled: true
+    ttl: 168h0m0s
+    schedule: "0 3 * * *"
+    scheduleName: nightly
+velero:
+  fullnameOverride: velero
+  initContainers:
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.3.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
+  configuration:
+    provider: aws
+    backupStorageLocation:
+      config: 
+        region: eu-west-1
+    volumeSnapshotLocation:
+      config: 
+        region: eu-west-1
+  metrics:
+    serviceMonitor:
+      enabled: false

@@ -1,0 +1,12 @@
+applicationSet:
+  gitRepoUrl: x
+  project: default
+  app:
+    prod:
+      targetRevision: main
+  cluster:
+    prod:
+      targetRevision: main
+  mgm:
+    prod:
+      targetRevision: main

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: keycloak
+spec:
+  description: keycloak team projects
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: 'keycloak*'
+      server: '*'
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  roles:
+    # A role which provides sync privileges to all applications for CI system
+    - name: keycloak
+      description: Privileges for keycloak
+      policies:
+        - p, ArgoCD-keycloak-Admin, applications, *, *, allow

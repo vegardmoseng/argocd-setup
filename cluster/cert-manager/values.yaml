@@ -1,0 +1,24 @@
+global:
+  extraSecretReplacement:
+    token: "#appenvironment#"
+cert-manager:
+  fullnameOverride: cert-manager
+  installCRDs: true
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: x
+letsencrypt-credentials-secret:
+  enabled: true
+  name: letsencrypt
+  region: eu-west-1
+  data:
+    - key: "cost-#appenvironment#-cert-manager-letsencrypt" 
+      name: "tls.key"
+      property: "tls.key"
+acme:
+  email: x
+solvers:
+  - selector: {}
+    dns01:
+      route53:
+        region: eu-west-1

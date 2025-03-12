@@ -1,0 +1,4 @@
+namespace: istio-system
+syncPolicy:
+  syncOptions:
+    Replace: false

@@ -1,0 +1,4 @@
+namespace: external-secrets
+syncPolicy:
+  syncOptions:
+    Replace: false

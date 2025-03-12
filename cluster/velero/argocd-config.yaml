@@ -1,0 +1,4 @@
+namespace: velero
+syncPolicy:
+  syncOptions:
+    Replace: false

@@ -1,0 +1,9 @@
+cert-manager:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: x
+solvers:
+  - selector: {}
+    dns01:
+      route53:
+        region: eu-west-1

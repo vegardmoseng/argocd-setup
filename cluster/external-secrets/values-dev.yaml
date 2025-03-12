@@ -1,0 +1,4 @@
+kubernetes-external-secrets:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: x

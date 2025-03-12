@@ -1,0 +1,24 @@
+apiVersion: v2
+description: A Helm chart for argo-cd
+name: argo-cd
+version: 2.1.6
+dependencies:
+  - name: external-secret
+    version: 1.1.0
+    repository: "file://../../../helm-charts/external-secret"
+    alias: gitRepoCredentials
+  - name: external-secret
+    version: 1.1.0
+    repository: "file://../../../helm-charts/external-secret"
+    alias: sso-credentials
+  - name: external-secret
+    version: 1.1.0
+    repository: "file://../../../helm-charts/external-secret"
+    alias: cluster-credentials-dev-eks
+  - name: certificate
+    version: 1.0.0
+    repository: "file://../../../helm-charts/certificate"
+    alias: argocd-certificate
+  - name: istio-objects
+    version: 1.14.0
+    repository: "file://../../../helm-charts/istio-objects"

@@ -1,0 +1,16 @@
+schedules:
+  daily:
+    ttl: 720h0m0s # 30 days
+velero:
+  configuration:
+    backupStorageLocation:
+      bucket: dev-aws-velero-backups
+      config: 
+        region: eu-west-1
+    volumeSnapshotLocation:
+      config: 
+        region: eu-west-1
+  serviceAccount:
+    server:
+      annotations:
+        eks.amazonaws.com/role-arn: x

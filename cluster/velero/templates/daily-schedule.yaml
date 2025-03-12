@@ -1,0 +1,16 @@
+{{- if .Values.schedules.daily.enabled -}}
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: {{ .Values.schedules.daily.scheduleName }}
+spec:
+  schedule: '{{ .Values.schedules.daily.schedule }}'
+  template:
+    includedNamespaces:
+      - '*'
+    {{- if .Values.schedules.daily.excludedNamespaces }}
+    excludedNamespaces:
+  {{ toYaml .Values.schedules.daily.excludedNamespaces | indent 4 }}
+    {{- end }}
+    ttl: {{ .Values.schedules.daily.ttl }}
+{{- end }}

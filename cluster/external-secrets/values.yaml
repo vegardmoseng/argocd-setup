@@ -1,0 +1,2 @@
+kubernetes-external-secrets:
+  fullnameOverride: external-secrets

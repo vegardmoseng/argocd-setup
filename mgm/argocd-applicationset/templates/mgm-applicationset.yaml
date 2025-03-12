@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: mgm-apps
+spec:
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: {{ .Values.applicationSet.gitRepoUrl }}
+          revision: {{ .Values.applicationSet.mgm.dev.targetRevision }}
+          files:
+          - path: "helm/mgm/**/argocd-config.yaml"
+      - list:
+          elements:
+          - cluster: dev-eks
+            name:  dev-eks
+            environment: dev
+            values:
+              project: {{ .Values.applicationSet.project }}
+              targetRevision: {{ .Values.applicationSet.mgm.dev.targetRevision }}
+  template:
+    metadata:
+      name: '{{ template "asKey" "path.basename" }}-{{ template "asKey" "cluster" }}'
+      labels:
+        environment: '{{template "asKey" "environment"}}'
+    spec:
+      project: '{{template "asKey" "values.project"}}'
+      source:
+        repoURL: {{ .Values.applicationSet.gitRepoUrl }}
+        targetRevision: '{{template "asKey" "values.targetRevision"}}'
+        path: '{{template "asKey" "path"}}'
+        helm:
+          valueFiles:
+            - 'values-{{template "asKey" "environment"}}.yaml'
+          values: |
+            global:
+              environment: {{template "asKey" "environment"}}
+              extraSecretReplacement:
+                replacement: {{template "asKey" "environment"}}
+      destination:
+        name: '{{ template "asKey" "name" }}'
+        namespace: '{{ template "asKey" "namespace" }}'
+      ignoreDifferences:
+        - group: admissionregistration.k8s.io
+          kind: ValidatingWebhookConfiguration
+          jsonPointers:
+          - /webhooks
+      syncPolicy:
+        syncOptions:     # Sync options which modifies sync behavior
+          - CreateNamespace=true
+          - Replace={{ template "asKey" "syncPolicy.syncOptions.Replace" }}
+  syncPolicy:
+    preserveResourcesOnDeletion: true # important value, if not here if applicationset is delete all object will also be deleted
