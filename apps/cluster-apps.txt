@@ -1,0 +1,1 @@
+Here goes help charts of general applications that is not related to cluster or argocd management.
